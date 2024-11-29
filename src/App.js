@@ -1,9 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import Navbar from './components/Navbar';
 import styled, { createGlobalStyle, keyframes } from 'styled-components';
-import heroImage from './assets/image.png'; // Import your local image
+import heroImage from './assets/image.png';
+import Register from './components/Register';
+import './firebaseConfig';
 
-// Define global styles
 const GlobalStyle = createGlobalStyle`
   body {
     font-family: "Inconsolata", monospace;
@@ -26,7 +27,6 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-// Define fade-in animations
 const fadeIn = keyframes`
   from {
     opacity: 0;
@@ -39,7 +39,6 @@ const fadeIn = keyframes`
 `;
 
 const App = () => {
-  // Set up Intersection Observer to animate sections when they appear in view
   const sectionRefs = useRef([]);
   sectionRefs.current = [];
 
@@ -55,7 +54,7 @@ const App = () => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add('fadeIn');
-            observer.unobserve(entry.target); // Stop observing once animation is triggered
+            observer.unobserve(entry.target);
           }
         });
       },
@@ -87,13 +86,11 @@ const App = () => {
         </Section>
 
         <Section id="about" ref={addToRefs}>
-        <About>
-          <p>The Technovation chapter at Skyline High School is dedicated to empowering young women and under-represented individuals in STEM fields.</p>
-
-          <p>Our mission is to combine business acumen with coding skills to create innovative solutions through the Technovation Challenge, an annual global competition. We believe in fostering early improvement in critical thinking, problem-solving, and teamwork through engaging and hands-on experiences.</p>
-
-          <p><strong>TechnoHacks</strong> is our upcoming weekend-long invention marathon designed to provide middle and high school students from the Sammamish area an opportunity to develop their skills, create impactful projects, and prepare for the international competition.</p>
-        </About>
+          <About>
+            <p>The Technovation chapter at Skyline High School is dedicated to empowering young women and under-represented individuals in STEM fields.</p>
+            <p>Our mission is to combine business acumen with coding skills to create innovative solutions through the Technovation Challenge, an annual global competition. We believe in fostering early improvement in critical thinking, problem-solving, and teamwork through engaging and hands-on experiences.</p>
+            <p><strong>TechnoHacks</strong> is our upcoming weekend-long invention marathon designed to provide middle and high school students from the Sammamish area an opportunity to develop their skills, create impactful projects, and prepare for the international competition.</p>
+          </About>
         </Section>
 
         <Section id="schedule" ref={addToRefs}>
@@ -117,22 +114,14 @@ const App = () => {
         </Section>
 
         <Section id="register" ref={addToRefs}>
-          <Register>
-            <h2>Register for TechnoHacks</h2>
-            <StyledForm>
-              <StyledInput type="text" placeholder="Your Name" required />
-              <StyledInput type="email" placeholder="Your Email" required />
-              <StyledInput type="text" placeholder="Team Name (optional)" />
-              <StyledButton type="submit">Register</StyledButton>
-            </StyledForm>
-          </Register>
+          <h2>Register for TechnoHacks</h2>
+          <Register />
         </Section>
       </Main>
     </>
   );
 };
 
-// Styled Components
 const Main = styled.main`
   scroll-behavior: smooth;
   color: #000;
@@ -208,7 +197,6 @@ const About = styled.div`
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 `;
 
-
 const Schedule = styled.div``;
 
 const ScheduleGrid = styled.div`
@@ -222,25 +210,6 @@ const EventCard = styled.div`
   background-color: #fff;
   padding: 20px;
   border-radius: 10px;
-`;
-
-const Register = styled.div`
-  padding: 40px;
-  border-radius: 10px;
-`;
-
-const StyledForm = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  max-width: 500px;
-  margin: 0 auto;
-`;
-
-const StyledInput = styled.input`
-  padding: 10px;
-  font-size: 1rem;
-  border-radius: 5px;
 `;
 
 export default App;
