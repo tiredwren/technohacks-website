@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
-import styled from 'styled-components'; // Import styled-components
+import styled from 'styled-components';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Register = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [teamName, setTeamName] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     try {
       await addDoc(collection(db, 'signups'), {
@@ -18,41 +22,48 @@ const Register = () => {
         teamName,
         timestamp: new Date(),
       });
-      alert('Registration successful!');
+      toast.success('Registration successful!');
       // Reset form fields
       setName('');
       setEmail('');
       setTeamName('');
     } catch (error) {
       console.error('Error adding document: ', error);
-      alert('Error registering. Please try again.');
+      toast.error('Error registering. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <StyledForm onSubmit={handleSubmit}>
-      <StyledInput
-        type="text"
-        placeholder="Your Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        required
-      />
-      <StyledInput
-        type="email"
-        placeholder="Your Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
-      <StyledInput
-        type="text"
-        placeholder="Team Name (optional)"
-        value={teamName}
-        onChange={(e) => setTeamName(e.target.value)}
-      />
-      <StyledButton type="submit">Register</StyledButton>
-    </StyledForm>
+    <div>
+      <ToastContainer />
+      <StyledForm onSubmit={handleSubmit}>
+        <StyledInput
+          type="text"
+          placeholder="Your Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+        />
+        <StyledInput
+          type="email"
+          placeholder="Your Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <StyledInput
+          type="text"
+          placeholder="Team Name (optional)"
+          value={teamName}
+          onChange={(e) => setTeamName(e.target.value)}
+        />
+        <StyledButton type="submit" disabled={loading}>
+          {loading ? 'Registering...' : 'Register'}
+        </StyledButton>
+      </StyledForm>
+    </div>
   );
 };
 
@@ -89,6 +100,11 @@ const StyledButton = styled.button`
 
   &:hover {
     background-color: #f08080;
+  }
+
+  &:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
   }
 `;
 
