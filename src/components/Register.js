@@ -23,7 +23,7 @@ const Register = () => {
         timestamp: new Date(),
       });
       toast.success('Registration successful!');
-      // Reset form fields
+      // reset form fields
       setName('');
       setEmail('');
       setTeamName('');
